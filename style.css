@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #eef1f7;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    background: #0b43d1;
+    color: white;
+    padding: 40px 20px;
+}
+
+.subtitle {
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 15px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.toolbar button {
+    padding: 10px 16px;
+    background: #0b43d1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+main {
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    margin-bottom: 25px;
+}
+
+.card h2 {
+    color: #0b43d1;
+}
+
+.terminal {
+    background: #1a1f24;
+    color: #00ff99;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+.terminal pre {
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Modo impresión */
+@media print {
+    .no-print,
+    .toolbar,
+    header,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        margin: 0;
+    }
+
+    .card {
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+}

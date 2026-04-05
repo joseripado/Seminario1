@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Técnico y de Usuario – Intranet Corporativa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Manual Técnico y de Usuario – Intranet Corporativa</h1>
+    <p class="subtitle">Documentación editable y profesional</p>
+</header>
+
+<div class="toolbar no-print">
+    <button id="editBtn">Activar Edición</button>
+    <button id="saveBtn">Guardar</button>
+    <button id="resetBtn">Restaurar Manual</button>
+    <button id="addImageBtn">Añadir Imagen</button>
+    <button id="addTerminalBtn">Añadir Comandos</button>
+    <button id="addSectionBtn">Añadir Sección</button>
+    <button id="printBtn">Imprimir / PDF</button>
+    <input type="file" id="imageInput" accept="image/*" style="display:none;">
+</div>
+
+
+<main id="content" contenteditable="false">
+
+    <section class="card">
+        <h2>1. Introducción General</h2>
+        <p>
+            El objetivo principal ha sido crear una Intranet Corporativa de Gestión del Conocimiento, totalmente funcional en un entorno real, accesible mediante navegador web, segura, modular y construida con tecnologías modernas.
+        </p>
+        <p>El proyecto integra:</p>
+        <ul>
+            <li>Microsoft Azure como infraestructura cloud.</li>
+            <li>Ubuntu Server como sistema operativo base.</li>
+            <li>Docker como entorno contenerizado profesional.</li>
+            <li>Nginx Proxy Manager para gestionar HTTPS y dominios.</li>
+            <li>HumHub, que constituye el núcleo colaborativo.</li>
+            <li>MariaDB, base de datos transaccional.</li>
+            <li>WireGuard, VPN corporativa.</li>
+            <li>Character.AI, chatbot interno.</li>
+            <li>Integraciones reales con Trello, Corello y GitHub.</li>
+            <li>Espacios corporativos: Corporative Web, Cibersecurity, Marketing, Projects.</li>
+            <li>Scripts y comandos para mantenimiento y automatización.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>2. Infraestructura: Azure Free Tier y Azure for Students</h2>
+
+        <h3>2.1 Fase 1 – Azure Free Tier</h3>
+
+        <h4>2.1.1 Creación de la Máquina Virtual</h4>
+        <p>Desde el portal de Azure se creó una VM con:</p>
+        <ul>
+            <li>Ubuntu Server 22.04</li>
+            <li>1 vCPU</li>
+            <li>1 GB RAM</li>
+            <li>30 GB SSD</li>
+            <li>SSH por clave</li>
+            <li>NSG personalizado</li>
+        </ul>
+
+        <h4>2.1.2 Configuración inicial del servidor</h4>
+        <div class="terminal">
+<pre>
+ssh -i clave.pem adminred@IP_PUBLICA
+sudo apt update && sudo apt upgrade -y
+sudo apt install ca-certificates curl gnupg htop unzip -y
+</pre>
+        </div>
+
+        <h4>2.1.3 Instalación de Docker</h4>
+        <div class="terminal">
+<pre>
+curl -fsSL https://get.docker.com | sudo sh
+sudo systemctl enable docker
+sudo systemctl start docker
+</pre>
+        </div>
+
+        <h3>2.2 Fase 2 – Azure for Students</h3>
+
+        <p>La migración se realizó para obtener más recursos, estabilidad y escalabilidad.</p>
+
+        <h4>Comandos clave de migración</h4>
+
+        <p>Parar contenedores:</p>
+        <div class="terminal">
+<pre>
+sudo docker stop humhub humhub-db nginx-proxy wg-easy
+</pre>
+        </div>
+
+        <p>Exportar base de datos:</p>
+        <div class="terminal">
+<pre>
+sudo docker exec humhub-db mysqldump -u humhub -ppassword humhub > backup.sql
+</pre>
+        </div>
+
+        <p>Copiar backup:</p>
+        <div class="terminal">
+<pre>
+scp backup.sql adminred@NUEVA_IP:/home/adminred/
+</pre>
+        </div>
+
+        <p>Restaurar:</p>
+        <div class="terminal">
+<pre>
+sudo docker exec -i humhub-db mysql -u humhub -ppassword humhub < backup.sql
+</pre>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>3. Arquitectura General</h2>
+
+        <p>El sistema sigue una arquitectura en capas:</p>
+
+        <ul>
+            <li>Azure (capa cloud)</li>
+            <li>Ubuntu Server</li>
+            <li>Docker</li>
+            <li>Nginx Proxy Manager</li>
+            <li>HumHub</li>
+            <li>MariaDB</li>
+            <li>WireGuard</li>
+            <li>Character.AI</li>
+            <li>Trello, Corello, GitHub</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>4. Puertos y Seguridad</h2>
+
+        <h3>Ver puertos activos</h3>
+        <div class="terminal">
+<pre>
+sudo ss -ltnp
+</pre>
+        </div>
+
+        <h3>Puertos públicos</h3>
+        <ul>
+            <li>22 – SSH</li>
+            <li>80 – HTTP</li>
+            <li>443 – HTTPS</li>
+            <li>81 – Panel Proxy Manager</li>
+            <li>51820 – WireGuard</li>
+            <li>51821 – Panel VPN</li>
+        </ul>
+
+        <h3>Puertos internos</h3>
+        <ul>
+            <li>3306 – MariaDB</li>
+            <li>80 – HumHub (solo interno)</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>5. Espacios Corporativos</h2>
+
+        <h3>5.1 Corporative Web</h3>
+        <p>Portal principal de la empresa, contiene documentación general y accesos a todas las herramientas internas.</p>
+
+        <h3>5.2 Cibersecurity</h3>
+        <p>Espacio del área de seguridad informática.</p>
+
+        <h4>Comandos útiles</h4>
+        <div class="terminal">
+<pre>
+sudo journalctl -xe
+sudo docker logs humhub
+sudo wg show
+</pre>
+        </div>
+
+        <h3>5.3 Marketing</h3>
+        <p>Material visual, recursos multimedia, documentos creativos.</p>
+
+        <h3>5.4 Projects</h3>
+        <p>Integración con Trello, Corello y GitHub en un entorno colaborativo.</p>
+    </section>
+
+    <section class="card">
+        <h2>6. Módulos Funcionales de HumHub</h2>
+        <ul>
+            <li>Wiki interna</li>
+            <li>Foros</li>
+            <li>Gestor documental</li>
+            <li>Mensajería</li>
+            <li>Notificaciones</li>
+            <li>Tareas y calendario</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>7. Integraciones Externas</h2>
+        <ul>
+            <li>Trello</li>
+            <li>Corello</li>
+            <li>GitHub</li>
+            <li>Calendarios de HumHub</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>8. VPN Corporativa (WireGuard)</h2>
+        <h4>Estado de la VPN</h4>
+        <div class="terminal">
+<pre>
+sudo wg show
+</pre>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>9. IA Generativa Integrada</h2>
+        <p>Chatbot corporativo con Character.AI, entrenado con documentación interna.</p>
+    </section>
+
+    <section class="card">
+        <h2>10. Conclusión Final</h2>
+        <p>La intranet cumple todos los requisitos del seminario, con un diseño real de empresa, seguridad completa, integración con herramientas externas, documentación y chatbot corporativo.</p>
+    </section>
+
+</main>
+
+<footer>
+    Intranet Corporativa – Manual Profesional
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
